@@ -7,7 +7,7 @@ import re
 
 class WarwickshireSpider(scrapy.Spider):
     # the cli argument
-    name = 'wcc'
+    name = 'warks'
     start_urls = [
         'https://warwickshire.gov.uk',
     ]
@@ -21,7 +21,7 @@ class WarwickshireSpider(scrapy.Spider):
         self.visited_pages_all_links = {}
 
     def parse(self, response):
-        for weblink in response.css("a:attr(href)").getall():
+        for weblink in response.css("a::attr(href)").getall():
             yield {
                 'weblink' : weblink,
             }
@@ -30,7 +30,7 @@ class WarwickshireSpider(scrapy.Spider):
             if self.pattern.search(weblink):
                 yield scrapy.Request(response.urljoin(weblink), callback=self.parse)
                 page = response.url
-                if page not in self.visted_pages:
+                if page not in self.visited_pages:
                     self.visited_pages.append(page)
                 filename = 'visited_pages_only_wcc.txt'
                 with open(filename, 'w') as f:
