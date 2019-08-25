@@ -15,7 +15,7 @@ class WarwickshireSpider(scrapy.Spider):
     # extend the class
     def __init__(self):
         super().__init__()
-        self.pattern = re.compile('^https://www.warwickshire.gov.uk')
+        self.pattern = re.compile('^(https://|http://|https://www.|http://www.)warwickshire.gov.uk')
         self.visited_pages = []
         # not yet implemented
         self.visited_pages_all_links = {}
@@ -31,7 +31,6 @@ class WarwickshireSpider(scrapy.Spider):
                 f.write(k + '\n')
                 for x in range(len(v)):
                     f.write('\t' + v[x] + '\n')
-                # f.write(str(v) + '\n\n')
             
         for weblink in response.css("a::attr(href)").getall():
             yield {
@@ -47,3 +46,5 @@ class WarwickshireSpider(scrapy.Spider):
                 with open(filename, 'w') as f:
                     for x in range(len(self.visited_pages)):
                         f.write(self.visited_pages[x] + '\n')
+
+        ## We want to parse all the pages that then get pushed to the 
